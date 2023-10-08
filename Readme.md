@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Tatyana MIlneva](https://up.htmlacademy.ru/javascript/30/user/2206893).
-* Наставник: `Неизвестно`.
+* Наставник: [Павел Позняк](https://htmlacademy.ru/profile/id907403).
 
 ---
 
