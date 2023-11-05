@@ -64,4 +64,6 @@ const generatePost = () => ({
   comments: Array.from({length: getRandomArrayIndex(COMMENTS_COUNT)}, generateComment)
 });
 
-const postsArray = Array.from({length: POSTS_COUNT}, generatePost);
+const generateArrayOfPosts = Array.from({length: POSTS_COUNT}, generatePost);
+
+generateArrayOfPosts();
