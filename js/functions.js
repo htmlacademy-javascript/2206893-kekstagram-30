@@ -1,19 +1,14 @@
-const checkStringLength = (string, length) => string.length <= length;
-
-const isStringPalindrome = (string) => {
-  string = string.replaceAll(' ', '').toLowerCase();
-  return string === string.split('').reverse().join('');
+const isMeetingINWorkday = (startWorkDay, endWorkDay, startMeeting, duration) => {
+  const timeToPoint = (time) => Number(time.replace(/:/, '.'));
+  const timeInMinutes = (number) => Number((Math.trunc(number) * 60 + (number % 1 * 100)).toFixed());
+  startMeeting = timeInMinutes(timeToPoint(startMeeting));
+  startWorkDay = timeInMinutes(timeToPoint(startWorkDay));
+  endWorkDay = timeInMinutes(timeToPoint(endWorkDay));
+  return ((startMeeting >= startWorkDay) && ((startMeeting + duration) <= endWorkDay));
 };
 
-
-const selectNumbers = (string) => {
-  if (!string) {
-    return NaN;
-  }
-  string = string.toString().replace(/[^0-9]/g, '');
-  return parseInt(string, 10);
-};
-
-checkStringLength('проверяемая строка', 20);
-isStringPalindrome('Проверяемая строка');
-selectNumbers('12 кефир, 0.5 батона');
+isMeetingINWorkday('08:00', '17:30', '14:05', 90);
+isMeetingINWorkday('8:0', '10:0', '8:0', 120);
+isMeetingINWorkday('08:00', '14:30', '14:00', 90);
+isMeetingINWorkday('14:00', '17:30', '08:0', 90);
+isMeetingINWorkday('8:00', '17:30', '08:00', 900);
