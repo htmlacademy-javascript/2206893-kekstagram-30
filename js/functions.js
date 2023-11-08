@@ -2,7 +2,7 @@ const isMeetingINWorkday = (startWorkDay, endWorkDay, startMeeting, duration) =>
   const timeToPoint = (time) => Number(time.replace(/:/, '.'));
   const timeInMinutes = (number) => Number((Math.trunc(number) * 60 + (number % 1 * 100)).toFixed());
   startMeeting = timeInMinutes(timeToPoint(startMeeting));
-  startWorkDay = timeToPoint(startWorkDay);
+  startWorkDay = timeInMinutes(timeToPoint(startWorkDay));
   endWorkDay = timeInMinutes(timeToPoint(endWorkDay));
   return ((startMeeting >= startWorkDay) && ((startMeeting + duration) <= endWorkDay));
 };
