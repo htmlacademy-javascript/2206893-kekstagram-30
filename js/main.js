@@ -1,3 +1,3 @@
-import {generateArrayOfPosts} from './data.js';
+import {renderPosts} from './render.js';
 
-generateArrayOfPosts();
+renderPosts();
