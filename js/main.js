@@ -1,3 +1,3 @@
-import {renderPosts} from './render.js';
+import {renderPosts} from './render-posts.js';
 
 renderPosts();
