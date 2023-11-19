@@ -2,11 +2,12 @@ import {isEscapeKey} from './utils.js';
 
 const container = document.querySelector('.big-picture');
 const closeButton = document.querySelector('.big-picture__cancel');
-const commentCount = document.querySelector('.social__comment-count');
-const commentShowMore = document.querySelector('.comments-loader');
-const commentShownNumber = document.querySelector('.social__comment-shown-count');
+const buttonShowMore = document.querySelector('.comments-loader');
 const commentList = document.querySelector('.social__comments');
 const commentTemplate = document.querySelector('.social__comment');
+const commentShownNumber = document.querySelector('.social__comment-shown-count');
+let commentShownList = [];
+let commentsCounter;
 
 const generateComment = (element) => {
   const comment = commentTemplate.cloneNode(true);
@@ -19,21 +20,49 @@ const generateComment = (element) => {
   return comment;
 };
 
+const onbuttonShowMoreClick = (comments) => {
+  buttonShowMore.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    if (commentsCounter + 5 >= comments.length) {
+      comments.slice(commentsCounter, comments.length).forEach((element) => {
+        commentList.append(generateComment(element));
+      });
+      commentsCounter = comments.length;
+      buttonShowMore.classList.add('hidden');
+    } else {
+      commentsCounter += 5;
+      buttonShowMore.classList.remove('hidden');
+      comments.slice(commentsCounter - 5, commentsCounter).forEach((element) => {
+        commentList.append(generateComment(element));
+      });
+    }
+    commentShownNumber.textContent = commentsCounter;
+  });
+};
+
 const fillComments = (comments) => {
+  commentsCounter = 0;
+
   if (comments.length === 0) {
-    commentShownNumber.textContent = 0;
+    buttonShowMore.classList.add('hidden');
+    commentShownNumber.textContent = commentsCounter;
     return;
   }
-
   if (comments.length <= 5) {
-    commentShownNumber.textContent = comments.length;
+    commentsCounter = comments.length;
+    buttonShowMore.classList.add('hidden');
   } else {
-    commentShownNumber.textContent = 5;
+    commentsCounter = 5;
+    buttonShowMore.classList.remove('hidden');
   }
 
-  comments.forEach((element) => {
+  commentShownNumber.textContent = commentsCounter;
+  commentShownList = comments.slice(0, commentsCounter);
+  commentShownList.forEach((element) => {
     commentList.append(generateComment(element));
   });
+
+  onbuttonShowMoreClick(comments);
 };
 
 const fillPostData = (data) => {
@@ -57,11 +86,7 @@ const onDocumentKeydown = (evt) => {
 
 const closePostModal = () => {
   container.classList.add('hidden');
-
-  commentCount.classList.remove('hidden');
-  commentShowMore.classList.remove('hidden');
   document.body.classList.remove('modal-open');
-
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
@@ -69,11 +94,7 @@ const openPostModal = () => {
   commentList.innerHTML = '';
 
   container.classList.remove('hidden');
-
-  commentCount.classList.add('hidden');
-  commentShowMore.classList.add('hidden');
   document.body.classList.add('modal-open');
-
   document.addEventListener('keydown', onDocumentKeydown);
 
   closeButton.addEventListener('click', () => {
