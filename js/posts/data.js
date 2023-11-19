@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayIndex, getRandomArrayElement} from './utils.js';
+import {getRandomInteger, getRandomArrayIndex, getRandomArrayElement} from '../utils/util.js';
 
 const POSTS_COUNT = 25;
 const LIKES_COUNT = {
