@@ -4,10 +4,12 @@ const DEFAULT_PACK_COMMENTS = 5;
 
 const container = document.querySelector('.big-picture');
 const closeButton = document.querySelector('.big-picture__cancel');
-const buttonShowMore = document.querySelector('.comments-loader');
+const showMoreButton = document.querySelector('.comments-loader');
 const commentList = document.querySelector('.social__comments');
 const commentTemplate = document.querySelector('.social__comment');
-const commentShownNumber = document.querySelector('.social__comment-shown-count');
+const shownComments = document.querySelector('.social__comment-shown-count');
+const totalComments = document.querySelector('.social__comment-total-count');
+
 let commentsCounter;
 let comments = [];
 
@@ -22,45 +24,50 @@ const generateComment = (element) => {
   return comment;
 };
 
-const showComments = () => {
-  const counter = Math.min(commentsCounter + DEFAULT_PACK_COMMENTS, comments.length);
-
-  comments.slice(commentsCounter, counter).forEach((element) => commentList.append(generateComment(element)));
-
-  commentsCounter = counter;
-  commentShownNumber.textContent = counter;
-
-  if (commentsCounter === comments.length) {
-    buttonShowMore.classList.add('hidden');
-  }
+const updateCommentsCounter = () => {
+  shownComments.textContent = commentsCounter;
 };
 
-const fillPostData = (data) => {
-  commentsCounter = 0;
-  commentList.innerHTML = '';
+const setShowMoreButtonState = () => {
+  showMoreButton.classList.toggle('hidden', commentsCounter === comments.length);
+};
 
+const renderComments = () => {
+  comments.slice(commentsCounter, commentsCounter + DEFAULT_PACK_COMMENTS).forEach((element) => commentList.append(generateComment(element)));
+  commentsCounter = Math.min(commentsCounter + DEFAULT_PACK_COMMENTS, comments.length);
+
+  setShowMoreButtonState();
+  updateCommentsCounter();
+  shownComments.textContent = commentsCounter;
+};
+
+const onShowMoreButtonClick = () => renderComments();
+
+const fillPostData = (data) => {
   const picture = container.querySelector('.big-picture__img img');
 
   picture.src = data.url;
   picture.alt = data.description;
   container.querySelector('.likes-count').textContent = data.likes;
-  container.querySelector('.social__comment-total-count').textContent = data.comments.length;
   container.querySelector('.social__caption').textContent = data.description;
 
-  showComments();
-  buttonShowMore.addEventListener('click', showComments);
+  renderComments();
+  showMoreButton.addEventListener('click', onShowMoreButtonClick);
 };
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
+    evt.preventDefault();
     closePostModal();
   }
 };
 
+const onCloseButtonClick = () => closePostModal();
+
 function closePostModal () {
   container.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  buttonShowMore.classList.remove('hidden');
+  showMoreButton.classList.remove('hidden');
 
   document.removeEventListener('keydown', onDocumentKeydown);
 }
@@ -69,9 +76,14 @@ function openPostModal () {
   container.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  closeButton.addEventListener('click', closePostModal);
+  closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
 }
+
+const resetPostModal = () => {
+  commentsCounter = 0;
+  commentList.innerHTML = '';
+};
 
 const renderPostModal = (data) => {
   if (!container) {
@@ -79,6 +91,8 @@ const renderPostModal = (data) => {
   }
 
   comments = data.comments;
+  totalComments.textContent = comments.length;
+  resetPostModal();
   fillPostData(data);
   openPostModal();
 };
