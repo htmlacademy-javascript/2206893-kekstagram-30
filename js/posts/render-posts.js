@@ -1,5 +1,6 @@
 import {generateArrayOfPosts} from './data.js';
-import {renderPostModal} from './render-modal-post.js';
+import {renderPostModal} from './render-modal.js';
+
 const container = document.querySelector('.pictures');
 
 const template = document.querySelector('#picture')
