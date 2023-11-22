@@ -86,10 +86,6 @@ const resetPostModal = () => {
 };
 
 const renderPostModal = (data) => {
-  if (!container) {
-    return;
-  }
-
   comments = data.comments;
   totalComments.textContent = comments.length;
   resetPostModal();

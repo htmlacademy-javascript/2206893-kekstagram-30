@@ -26,10 +26,6 @@ const createPost = (data) => {
 };
 
 const renderPosts = () => {
-  if (!container) {
-    return;
-  }
-
   posts.forEach((post) => {
     createPost(post);
     container.appendChild(fragment);
