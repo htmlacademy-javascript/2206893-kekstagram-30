@@ -29,7 +29,7 @@ const validateHashtagRepeat = () => new Set(hashtagsArray).size === hashtagsArra
 
 const validateComment = () => comment.textContent.length <= COMMENT_MAX_LENGTH;
 
-function getErrorMessage () {
+function checkErrors () {
   pristine.addValidator(hashtags, validateHashtag, ERROR_INVALID_HASHTAG, 1, true);
   pristine.addValidator(hashtags, validateHashtagNumber, ERROR_NUMBER_HASHTAGS, 1, true);
   pristine.addValidator(hashtags, validateHashtagRepeat, ERROR_REPEAT_HASHTAGS, 1, true);
@@ -40,4 +40,4 @@ const validateForm = () => pristine.validate();
 
 const resetFormValidator = () => pristine.reset();
 
-export {validateForm, getErrorMessage, resetFormValidator};
+export {validateForm, checkErrors, resetFormValidator};

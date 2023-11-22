@@ -1,4 +1,4 @@
-import {validateForm, getErrorMessage, resetFormValidator, } from './validate-form.js';
+import {validateForm, checkErrors, resetFormValidator, } from './validate-form.js';
 import {isEscapeKey} from '../utils/util.js';
 
 const imgUploadButton = document.querySelector('.img-upload__input');
@@ -46,7 +46,7 @@ function closeFormModal () {
 const renderForm = () => {
   openFormModal();
   validateForm();
-  getErrorMessage();
+  checkErrors();
 };
 
 export {renderForm};
