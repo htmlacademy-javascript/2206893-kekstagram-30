@@ -1,4 +1,5 @@
-import {validateForm, checkErrors, resetFormValidator, } from './validate-form.js';
+import {validateForm, checkErrors, resetFormValidator} from './validate-form.js';
+import {scalePicture, resetScale} from './scale-picture.js';
 import {isEscapeKey} from '../utils/util.js';
 
 const imgUploadButton = document.querySelector('.img-upload__input');
@@ -36,6 +37,7 @@ function openFormModal () {
 function closeFormModal () {
   uploadForm.reset();
   resetFormValidator();
+  resetScale();
 
   modalContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -45,6 +47,7 @@ function closeFormModal () {
 
 const renderForm = () => {
   openFormModal();
+  scalePicture();
   validateForm();
   checkErrors();
 };
