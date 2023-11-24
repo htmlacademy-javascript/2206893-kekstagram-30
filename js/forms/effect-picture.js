@@ -63,7 +63,6 @@ const createSlider = (element) => {
     connect: 'lower'
   });
 
-  console.log(EFFECTS[element.value].min, EFFECTS[element.value].max, EFFECTS[element.value].step, EFFECTS[element.value].unit);
   sliderElement.noUiSlider.off('update');
   sliderElement.noUiSlider.on('update', () => {
     effectValue.value = sliderElement.noUiSlider.get();
