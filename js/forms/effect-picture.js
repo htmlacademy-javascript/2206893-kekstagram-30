@@ -49,26 +49,25 @@ const uploadedPicture = document.querySelector('.img-upload__preview img');
 const effectValue = document.querySelector('.effect-level__value');
 
 const createSlider = (element) => {
-  let currentEffect = element.value;
-
-  if (!EFFECTS[currentEffect]) {
-    currentEffect = 'none';
+  if (!EFFECTS[element.value]) {
+    element.value = 'none';
   }
 
   noUiSlider.create(sliderElement, {
     range: {
-      min: EFFECTS[currentEffect].min,
-      max: EFFECTS[currentEffect].max,
+      min: EFFECTS[element.value].min,
+      max: EFFECTS[element.value].max,
     },
-    start: EFFECTS[currentEffect].max,
-    step: EFFECTS[currentEffect].step,
+    start: EFFECTS[element.value].max,
+    step: EFFECTS[element.value].step,
     connect: 'lower'
   });
 
+  console.log(EFFECTS[element.value].min, EFFECTS[element.value].max, EFFECTS[element.value].step, EFFECTS[element.value].unit);
   sliderElement.noUiSlider.off('update');
   sliderElement.noUiSlider.on('update', () => {
     effectValue.value = sliderElement.noUiSlider.get();
-    uploadedPicture.style.filter = `${EFFECTS[currentEffect].name}(${effectValue.value}${EFFECTS[currentEffect].unit})`;
+    uploadedPicture.style.filter = `${EFFECTS[element.value].name}(${effectValue.value}${EFFECTS[element.value].unit})`;
   });
 };
 
@@ -78,7 +77,7 @@ const changeEffect = (element) => {
   if (!EFFECTS[currentEffect]) {
     currentEffect = 'none';
   }
-
+  console.log(EFFECTS[currentEffect].min, EFFECTS[currentEffect].max, EFFECTS[currentEffect].step, EFFECTS[currentEffect].unit);
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: EFFECTS[currentEffect].min,
@@ -90,13 +89,13 @@ const changeEffect = (element) => {
 
   sliderElement.noUiSlider.off('update');
   sliderElement.noUiSlider.on('update', () => {
-    effectValue.value = EFFECTS[currentEffect].max;
+    effectValue.value = sliderElement.noUiSlider.get();
     uploadedPicture.style.filter = `${EFFECTS[currentEffect].name}(${effectValue.value}${EFFECTS[currentEffect].unit})`;
   });
 };
 
 const setEffectControlAvailability = (effect) => {
-  if (effect.matches('#effect-none')) {
+  if (effect.value === 'none') {
     effectControl.classList.add('hidden');
     uploadedPicture.style.filter = '';
     return;
@@ -111,11 +110,17 @@ const initSlider = (effect) => {
   }
 
   setEffectControlAvailability(effect);
+  changeEffect(effect);
 };
 
 const onSelectEffectContainerChange = (evt) => {
-  changeEffect(evt.target);
   setEffectControlAvailability(evt.target);
+  changeEffect(evt.target);
 };
 
-export {initSlider, onSelectEffectContainerChange};
+function resetSlider () {
+  uploadedPicture.style.filter = '';
+  effectControl.classList.add('hidden');
+}
+
+export {initSlider, onSelectEffectContainerChange, resetSlider};

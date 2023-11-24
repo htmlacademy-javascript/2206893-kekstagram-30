@@ -1,6 +1,6 @@
 import {validateForm, checkErrors, resetFormValidator} from './validate-form.js';
 import {scalePicture, resetScale} from './scale-picture.js';
-import {initSlider, onSelectEffectContainerChange} from './effect-picture.js';
+import {initSlider, onSelectEffectContainerChange, resetSlider} from './effect-picture.js';
 import {isEscapeKey} from '../utils/util.js';
 
 const imgUploadButton = document.querySelector('.img-upload__input');
@@ -22,6 +22,7 @@ const onCloseButtonClick = () => closeFormModal();
 const onImgUploadButtonClick = () => {
   modalContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  openFormModal();
 };
 
 const onSubmitForm = (evt) => {
@@ -31,17 +32,17 @@ const onSubmitForm = (evt) => {
 };
 
 function openFormModal () {
-  imgUploadButton.addEventListener('change', onImgUploadButtonClick);
   selectEffectContainer.addEventListener('change', onSelectEffectContainerChange);
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
-  uploadForm.addEventListener('submit', (evt) => onSubmitForm(evt));
+  uploadForm.addEventListener('submit', onSubmitForm);
 }
 
 function closeFormModal () {
   uploadForm.reset();
   resetFormValidator();
   resetScale();
+  resetSlider();
 
   modalContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -50,11 +51,11 @@ function closeFormModal () {
 }
 
 const renderForm = () => {
-  openFormModal();
   scalePicture();
-  initSlider(currentEffect);
-  validateForm();
   checkErrors();
+  validateForm();
+  initSlider(currentEffect);
+  imgUploadButton.addEventListener('change', onImgUploadButtonClick);
 };
 
 export {renderForm};
