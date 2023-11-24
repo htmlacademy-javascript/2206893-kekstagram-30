@@ -49,24 +49,26 @@ const uploadedPicture = document.querySelector('.img-upload__preview img');
 const effectValue = document.querySelector('.effect-level__value');
 
 const createSlider = (element) => {
-  if (!EFFECTS[element.value]) {
-    element.value = 'none';
+  let currentEffect = element.value;
+
+  if (!EFFECTS[currentEffect]) {
+    currentEffect = 'none';
   }
 
   noUiSlider.create(sliderElement, {
     range: {
-      min: EFFECTS[element.value].min,
-      max: EFFECTS[element.value].max,
+      min: EFFECTS[currentEffect].min,
+      max: EFFECTS[currentEffect].max,
     },
-    start: EFFECTS[element.value].max,
-    step: EFFECTS[element.value].step,
+    start: EFFECTS[currentEffect].max,
+    step: EFFECTS[currentEffect].step,
     connect: 'lower'
   });
 
   sliderElement.noUiSlider.off('update');
   sliderElement.noUiSlider.on('update', () => {
     effectValue.value = sliderElement.noUiSlider.get();
-    uploadedPicture.style.filter = `${EFFECTS[element.value].name}(${effectValue.value}${EFFECTS[element.value].unit})`;
+    uploadedPicture.style.filter = `${EFFECTS[currentEffect].name}(${effectValue.value}${EFFECTS[currentEffect].unit})`;
   });
 };
 
@@ -108,13 +110,13 @@ const initSlider = (effect) => {
     createSlider(effect);
   }
 
-  setEffectControlAvailability(effect);
   changeEffect(effect);
+  setEffectControlAvailability(effect);
 };
 
 const onSelectEffectContainerChange = (evt) => {
-  setEffectControlAvailability(evt.target);
   changeEffect(evt.target);
+  setEffectControlAvailability(evt.target);
 };
 
 function resetSlider () {
