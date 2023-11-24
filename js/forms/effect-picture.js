@@ -77,7 +77,7 @@ const changeEffect = (element) => {
   if (!EFFECTS[currentEffect]) {
     currentEffect = 'none';
   }
-  console.log(EFFECTS[currentEffect].min, EFFECTS[currentEffect].max, EFFECTS[currentEffect].step, EFFECTS[currentEffect].unit);
+
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: EFFECTS[currentEffect].min,
