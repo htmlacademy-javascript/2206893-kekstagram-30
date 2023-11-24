@@ -1,10 +1,14 @@
-import {validateForm, checkErrors, resetFormValidator, } from './validate-form.js';
+import {validateForm, checkErrors, resetFormValidator} from './validate-form.js';
+import {scalePicture, resetScale} from './scale-picture.js';
+import {initSlider, onSelectEffectContainerChange} from './effect-picture.js';
 import {isEscapeKey} from '../utils/util.js';
 
 const imgUploadButton = document.querySelector('.img-upload__input');
 const modalContainer = document.querySelector('.img-upload__overlay');
 const uploadForm = document.querySelector('.img-upload__form');
 const closeButton = document.querySelector('.img-upload__cancel');
+const selectEffectContainer = document.querySelector('.img-upload__effects');
+const currentEffect = document.querySelector('.effects__radio:checked');
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt) && !evt.target.closest('.text__hashtags') && !evt.target.closest('.text__description')) {
@@ -18,6 +22,7 @@ const onCloseButtonClick = () => closeFormModal();
 const onImgUploadButtonClick = () => {
   modalContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  openFormModal();
 };
 
 const onSubmitForm = (evt) => {
@@ -27,7 +32,7 @@ const onSubmitForm = (evt) => {
 };
 
 function openFormModal () {
-  imgUploadButton.addEventListener('change', onImgUploadButtonClick);
+  selectEffectContainer.addEventListener('change', onSelectEffectContainerChange);
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
   uploadForm.addEventListener('submit', onSubmitForm);
@@ -36,6 +41,8 @@ function openFormModal () {
 function closeFormModal () {
   uploadForm.reset();
   resetFormValidator();
+  resetScale();
+  initSlider(currentEffect);
 
   modalContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -44,9 +51,11 @@ function closeFormModal () {
 }
 
 const renderForm = () => {
-  openFormModal();
   validateForm();
   checkErrors();
+  initSlider(currentEffect);
+  scalePicture();
+  imgUploadButton.addEventListener('change', onImgUploadButtonClick);
 };
 
 export {renderForm};

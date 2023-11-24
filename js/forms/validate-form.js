@@ -10,7 +10,7 @@ const uploadForm = document.querySelector('.img-upload__form');
 const hashtags = document.querySelector('.text__hashtags');
 const comment = document.querySelector('.text__description');
 
-let hashtagsArray = [];
+const createHashtags = (value) => value.trim().replaceAll(/ +/g, ' ').toLowerCase().split(' ');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -18,14 +18,14 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error'
 });
 
-const validateHashtag = () => {
-  hashtagsArray = hashtags.value.trim().replaceAll(/ +/g, ' ').toLowerCase().split(' ');
-  return hashtagsArray.every((hashtag) => HASHTAG_REG_EXP.test(hashtag));
+const validateHashtag = (value) => createHashtags(value).every((hashtag) => HASHTAG_REG_EXP.test(hashtag));
+
+const validateHashtagNumber = (value) => createHashtags(value).length <= HASHTAGS_MAX_COUNT;
+
+const validateHashtagRepeat = (value) => {
+  const createdHashtags = createHashtags(value);
+  return new Set(createdHashtags).size === createdHashtags.length;
 };
-
-const validateHashtagNumber = () => hashtagsArray.length <= HASHTAGS_MAX_COUNT;
-
-const validateHashtagRepeat = () => new Set(hashtagsArray).size === hashtagsArray.length;
 
 const validateComment = () => comment.textContent.length <= COMMENT_MAX_LENGTH;
 
