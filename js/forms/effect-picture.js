@@ -48,8 +48,8 @@ const effectControl = document.querySelector('.img-upload__effect-level');
 const uploadedPicture = document.querySelector('.img-upload__preview img');
 const effectValue = document.querySelector('.effect-level__value');
 
-const createSlider = (element) => {
-  let currentEffect = element.value;
+const createSlider = (effect) => {
+  let currentEffect = effect.value;
 
   if (!EFFECTS[currentEffect]) {
     currentEffect = 'none';
@@ -72,8 +72,8 @@ const createSlider = (element) => {
   });
 };
 
-const changeEffect = (element) => {
-  let currentEffect = element.value;
+const changeEffect = (effect) => {
+  let currentEffect = effect.value;
 
   if (!EFFECTS[currentEffect]) {
     currentEffect = 'none';
@@ -95,7 +95,7 @@ const changeEffect = (element) => {
   });
 };
 
-const setEffectControlAvailability = (effect) => {
+const setSliderSet = (effect) => {
   if (effect.value === 'none') {
     effectControl.classList.add('hidden');
     uploadedPicture.style.filter = '';
@@ -110,18 +110,13 @@ const initSlider = (effect) => {
     createSlider(effect);
   }
 
+  setSliderSet(effect);
   changeEffect(effect);
-  setEffectControlAvailability(effect);
 };
 
 const onSelectEffectContainerChange = (evt) => {
   changeEffect(evt.target);
-  setEffectControlAvailability(evt.target);
+  setSliderSet(evt.target);
 };
 
-function resetSlider () {
-  uploadedPicture.style.filter = '';
-  effectControl.classList.add('hidden');
-}
-
-export {initSlider, onSelectEffectContainerChange, resetSlider};
+export {initSlider, onSelectEffectContainerChange};

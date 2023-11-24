@@ -1,6 +1,6 @@
 import {validateForm, checkErrors, resetFormValidator} from './validate-form.js';
 import {scalePicture, resetScale} from './scale-picture.js';
-import {initSlider, onSelectEffectContainerChange, resetSlider} from './effect-picture.js';
+import {initSlider, onSelectEffectContainerChange} from './effect-picture.js';
 import {isEscapeKey} from '../utils/util.js';
 
 const imgUploadButton = document.querySelector('.img-upload__input');
@@ -42,7 +42,7 @@ function closeFormModal () {
   uploadForm.reset();
   resetFormValidator();
   resetScale();
-  resetSlider();
+  initSlider(currentEffect);
 
   modalContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -51,10 +51,10 @@ function closeFormModal () {
 }
 
 const renderForm = () => {
-  scalePicture();
-  checkErrors();
   validateForm();
+  checkErrors();
   initSlider(currentEffect);
+  scalePicture();
   imgUploadButton.addEventListener('change', onImgUploadButtonClick);
 };
 
