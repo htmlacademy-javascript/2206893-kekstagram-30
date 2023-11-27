@@ -1,13 +1,18 @@
-import {generateArrayOfPosts} from './data.js';
+import {getData} from '../data-server/api.js';
 import {renderPostModal} from './render-modal.js';
+import {renderGetErrorMessage} from '../utils/alert-messages.js';
+
+const GET_DATA_URL = 'https://30.javascript.pages.academy/kekstagram/data';
 
 const container = document.querySelector('.pictures');
+const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
+
+const showError = () => renderGetErrorMessage(errorTemplate);
 
 const template = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const posts = generateArrayOfPosts();
 const fragment = document.createDocumentFragment();
 
 const createPost = (data) => {
@@ -25,11 +30,14 @@ const createPost = (data) => {
   fragment.appendChild(post);
 };
 
-const renderPosts = () => {
+const createPosts = (posts) => {
   posts.forEach((post) => {
     createPost(post);
     container.appendChild(fragment);
   });
 };
+
+
+const renderPosts = () => getData(GET_DATA_URL, createPosts, showError);
 
 export {renderPosts};

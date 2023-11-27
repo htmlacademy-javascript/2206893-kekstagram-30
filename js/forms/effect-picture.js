@@ -48,75 +48,52 @@ const effectControl = document.querySelector('.img-upload__effect-level');
 const uploadedPicture = document.querySelector('.img-upload__preview img');
 const effectValue = document.querySelector('.effect-level__value');
 
-const createSlider = (effect) => {
-  let currentEffect = effect.value;
+const setCurrentEffect = (value) => EFFECTS[value] || EFFECTS.none;
 
-  if (!EFFECTS[currentEffect]) {
-    currentEffect = 'none';
-  }
+const updateSlider = (effect) => {
+  sliderElement.noUiSlider.off('update');
+  sliderElement.noUiSlider.on('update', () => {
+    effectValue.value = sliderElement.noUiSlider.get();
+    sliderElement.value = +effectValue.value;
+    uploadedPicture.style.filter = (effect === EFFECTS.none) ? null : `${effect.name}(${effectValue.value}${effect.unit})`;
+  });
+};
+
+const setSliderStatus = (effect) => effectControl.classList.toggle('hidden', effect === EFFECTS.none);
+
+const createSlider = (effect) => {
+  const currentEffect = setCurrentEffect(effect);
+
+  setSliderStatus(effect);
 
   noUiSlider.create(sliderElement, {
     range: {
-      min: EFFECTS[currentEffect].min,
-      max: EFFECTS[currentEffect].max,
+      min: currentEffect.min,
+      max: currentEffect.max,
     },
-    start: EFFECTS[currentEffect].max,
-    step: EFFECTS[currentEffect].step,
+    start: currentEffect.max,
+    step: currentEffect.step,
     connect: 'lower'
   });
 
-  sliderElement.noUiSlider.off('update');
-  sliderElement.noUiSlider.on('update', () => {
-    effectValue.value = sliderElement.noUiSlider.get();
-    uploadedPicture.style.filter = `${EFFECTS[currentEffect].name}(${effectValue.value}${EFFECTS[currentEffect].unit})`;
-  });
+  updateSlider(currentEffect);
 };
 
 const changeEffect = (effect) => {
-  let currentEffect = effect.value;
+  const currentEffect = setCurrentEffect(effect);
 
-  if (!EFFECTS[currentEffect]) {
-    currentEffect = 'none';
-  }
+  setSliderStatus(effect);
 
   sliderElement.noUiSlider.updateOptions({
     range: {
-      min: EFFECTS[currentEffect].min,
-      max: EFFECTS[currentEffect].max,
+      min: currentEffect.min,
+      max: currentEffect.max,
     },
-    start: EFFECTS[currentEffect].max,
-    step: EFFECTS[currentEffect].step
+    start: currentEffect.max,
+    step: currentEffect.step
   });
 
-  sliderElement.noUiSlider.off('update');
-  sliderElement.noUiSlider.on('update', () => {
-    effectValue.value = sliderElement.noUiSlider.get();
-    uploadedPicture.style.filter = `${EFFECTS[currentEffect].name}(${effectValue.value}${EFFECTS[currentEffect].unit})`;
-  });
+  updateSlider(currentEffect);
 };
 
-const setSliderSet = (effect) => {
-  if (effect.value === 'none') {
-    effectControl.classList.add('hidden');
-    uploadedPicture.style.filter = '';
-    return;
-  }
-
-  effectControl.classList.remove('hidden');
-};
-
-const initSlider = (effect) => {
-  if (!sliderElement.noUiSlider) {
-    createSlider(effect);
-  }
-
-  setSliderSet(effect);
-  changeEffect(effect);
-};
-
-const onSelectEffectContainerChange = (evt) => {
-  changeEffect(evt.target);
-  setSliderSet(evt.target);
-};
-
-export {initSlider, onSelectEffectContainerChange};
+export {createSlider, changeEffect};

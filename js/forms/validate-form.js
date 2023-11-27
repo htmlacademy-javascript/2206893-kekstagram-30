@@ -18,7 +18,7 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error'
 });
 
-const validateHashtag = (value) => createHashtags(value).every((hashtag) => HASHTAG_REG_EXP.test(hashtag));
+const validateHashtag = (value) => (value === '') || createHashtags(value).every((hashtag) => HASHTAG_REG_EXP.test(hashtag));
 
 const validateHashtagNumber = (value) => createHashtags(value).length <= HASHTAGS_MAX_COUNT;
 
