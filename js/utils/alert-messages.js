@@ -1,6 +1,6 @@
 import {isEscapeKey} from '../utils/util.js';
 
-const ALERT_SHOW_TIME = 20000;
+const ALERT_SHOW_TIME = 5000;
 
 let template;
 

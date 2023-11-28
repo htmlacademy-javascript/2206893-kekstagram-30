@@ -5,6 +5,7 @@ import {renderGetErrorMessage} from '../utils/alert-messages.js';
 const GET_DATA_URL = 'https://30.javascript.pages.academy/kekstagram/data';
 
 const container = document.querySelector('.pictures');
+const filterContainer = document.querySelector('.img-filters');
 const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 
 const showError = () => renderGetErrorMessage(errorTemplate);
@@ -35,8 +36,8 @@ const createPosts = (posts) => {
     createPost(post);
     container.appendChild(fragment);
   });
+  filterContainer.classList.remove('img-filters--inactive');
 };
-
 
 const renderPosts = () => getData(GET_DATA_URL, createPosts, showError);
 
