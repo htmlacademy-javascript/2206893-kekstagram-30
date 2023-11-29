@@ -18,10 +18,6 @@ const sendSuccessTemplate = document.querySelector('#success').content.querySele
 const successValue = 'success';
 const errorValue = 'error';
 
-const setSubmitButtonStatus = (value) => {
-  uploadForm.disabled = value;
-};
-
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt) && !evt.target.closest('.text__hashtags') && !evt.target.closest('.text__description') && !document.querySelector('.error')) {
     evt.preventDefault();
@@ -39,18 +35,13 @@ const showSuccess = () => {
   document.body.classList.add('modal-open');
 
   renderMessage(sendSuccessTemplate, successValue);
-  setSubmitButtonStatus(false);
 };
 
-const showError = () => {
-  renderMessage(sendErrorTemplate, errorValue);
-  setSubmitButtonStatus(false);
-};
+const showError = () => renderMessage(sendErrorTemplate, errorValue);
 
 const onSubmitForm = (evt) => {
   evt.preventDefault();
   if (validateForm()) {
-    setSubmitButtonStatus(true);
     sendData(POST_DATA_URL, showSuccess, showError, new FormData(evt.target));
   }
 };
@@ -58,6 +49,10 @@ const onSubmitForm = (evt) => {
 const onImgUploadButtonClick = () => {
   modalContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  validateForm();
+  checkErrors();
+  createSlider(currentEffect.value);
+  scalePicture();
   openFormModal();
 };
 
@@ -82,10 +77,6 @@ function closeFormModal () {
 }
 
 const renderForm = () => {
-  validateForm();
-  checkErrors();
-  createSlider(currentEffect.value);
-  scalePicture();
   imgUploadButton.addEventListener('change', onImgUploadButtonClick);
 };
 
