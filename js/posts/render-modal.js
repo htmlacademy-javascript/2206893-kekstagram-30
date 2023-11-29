@@ -44,10 +44,10 @@ const renderComments = () => {
 const onShowMoreButtonClick = () => renderComments();
 
 const fillPostData = (data) => {
-  const picture = container.querySelector('.big-picture__img img');
+  const img = container.querySelector('.big-picture__img img');
 
-  picture.src = data.url;
-  picture.alt = data.description;
+  img.src = data.url;
+  img.alt = data.description;
   container.querySelector('.likes-count').textContent = data.likes;
   container.querySelector('.social__caption').textContent = data.description;
 

@@ -23,10 +23,10 @@ const fragment = document.createDocumentFragment();
 const createPost = (data) => {
   const {url, description, likes, comments} = data;
   const post = template.cloneNode(true);
-  const picture = post.querySelector('.picture__img');
+  const img = post.querySelector('.picture__img');
 
-  picture.src = url;
-  picture.alt = description;
+  img.src = url;
+  img.alt = description;
   post.querySelector('.picture__likes').textContent = likes;
   post.querySelector('.picture__comments').textContent = comments.length;
 
