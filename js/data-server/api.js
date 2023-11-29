@@ -1,7 +1,4 @@
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
-};
+const HTTP_METHOD = 'POST';
 
 const getData = (url, onSuccess, onError) => {
   fetch(url)
@@ -11,7 +8,7 @@ const getData = (url, onSuccess, onError) => {
 };
 
 const sendData = (url, onSuccess, onError, body) => {
-  fetch(url, {method: Method.POST, body})
+  fetch(url, {method: HTTP_METHOD, body})
     .then((response) => {
       if (response.ok) {
         onSuccess();

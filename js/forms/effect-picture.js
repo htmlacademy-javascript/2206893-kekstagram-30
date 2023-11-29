@@ -50,6 +50,8 @@ const effectValue = document.querySelector('.effect-level__value');
 
 const setCurrentEffect = (value) => EFFECTS[value] || EFFECTS.none;
 
+const setSliderStatus = (effect) => effectControl.classList.toggle('hidden', effect === EFFECTS.none);
+
 const updateSlider = (effect) => {
   sliderElement.noUiSlider.off('update');
   sliderElement.noUiSlider.on('update', () => {
@@ -59,22 +61,22 @@ const updateSlider = (effect) => {
   });
 };
 
-const setSliderStatus = (effect) => effectControl.classList.toggle('hidden', effect === EFFECTS.none);
-
 const createSlider = (effect) => {
   const currentEffect = setCurrentEffect(effect);
 
-  setSliderStatus(effect);
+  setSliderStatus(currentEffect);
 
-  noUiSlider.create(sliderElement, {
-    range: {
-      min: currentEffect.min,
-      max: currentEffect.max,
-    },
-    start: currentEffect.max,
-    step: currentEffect.step,
-    connect: 'lower'
-  });
+  if (!sliderElement.noUiSlider) {
+    noUiSlider.create(sliderElement, {
+      range: {
+        min: currentEffect.min,
+        max: currentEffect.max,
+      },
+      start: currentEffect.max,
+      step: currentEffect.step,
+      connect: 'lower'
+    });
+  }
 
   updateSlider(currentEffect);
 };
@@ -82,7 +84,7 @@ const createSlider = (effect) => {
 const changeEffect = (effect) => {
   const currentEffect = setCurrentEffect(effect);
 
-  setSliderStatus(effect);
+  setSliderStatus(currentEffect);
 
   sliderElement.noUiSlider.updateOptions({
     range: {
