@@ -80,6 +80,14 @@ const onImgUploadButtonClick = () => {
   }
 };
 
+const resetPreview = () => {
+  const src = 'img/upload-default-image.jpg';
+  previewFull.src = src;
+  previewEffects.forEach((previewEffect) => {
+    previewEffect.style.backgroundImage = `url(${src})`;
+  });
+};
+
 function openFormModal () {
   modalContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -105,6 +113,7 @@ function closeFormModal () {
   uploadForm.reset();
   resetFormValidator();
   resetScale();
+  resetPreview();
   changeEffect(currentEffect.value);
 }
 
