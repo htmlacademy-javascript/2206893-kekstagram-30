@@ -10,7 +10,7 @@ const uploadForm = document.querySelector('.img-upload__form');
 const hashtags = document.querySelector('.text__hashtags');
 const comment = document.querySelector('.text__description');
 
-const createHashtags = (value) => value.trim().replaceAll(/ +/g, ' ').toLowerCase().split(' ');
+const createHashtags = (value) => value.trim().toLowerCase().split(' ').filter(Boolean);
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -18,7 +18,7 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error'
 });
 
-const validateHashtag = (value) => (value === '') || createHashtags(value).every((hashtag) => HASHTAG_REG_EXP.test(hashtag));
+const validateHashtag = (value) => createHashtags(value).every((hashtag) => HASHTAG_REG_EXP.test(hashtag));
 
 const validateHashtagNumber = (value) => createHashtags(value).length <= HASHTAGS_MAX_COUNT;
 
