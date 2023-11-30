@@ -28,4 +28,4 @@ const debounce = (callback, timeoutDelay = RENDER_DELAY) => {
   };
 };
 
-export {getRandomInteger, getShuffledArray, isEscapeKey, debounce};
+export {getShuffledArray, isEscapeKey, debounce};

@@ -48,7 +48,7 @@ const effectControl = document.querySelector('.img-upload__effect-level');
 const uploadedPicture = document.querySelector('.img-upload__preview img');
 const effectValue = document.querySelector('.effect-level__value');
 
-const setCurrentEffect = (value) => EFFECTS[value] || EFFECTS.none;
+const setCurrentEffect = (effect) => EFFECTS[effect] || EFFECTS.none;
 
 const setSliderStatus = (effect) => effectControl.classList.toggle('hidden', effect === EFFECTS.none);
 
@@ -61,7 +61,7 @@ const updateSlider = (effect) => {
   });
 };
 
-const createSlider = (effect) => {
+const initSlider = (effect) => {
   const currentEffect = setCurrentEffect(effect);
 
   setSliderStatus(currentEffect);
@@ -98,4 +98,4 @@ const changeEffect = (effect) => {
   updateSlider(currentEffect);
 };
 
-export {createSlider, changeEffect};
+export {initSlider, changeEffect};

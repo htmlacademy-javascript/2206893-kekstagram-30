@@ -1,6 +1,6 @@
 import {validateForm, checkErrors, resetFormValidator} from './validate-form.js';
 import {scalePicture, resetScale} from './scale-picture.js';
-import {createSlider, changeEffect} from './effect-picture.js';
+import {initSlider, changeEffect} from './effect-picture.js';
 import {isEscapeKey} from '../utils/util.js';
 import {renderMessage} from '../utils/alert-messages.js';
 import {sendData} from '../data-server/api.js';
@@ -8,6 +8,7 @@ import {sendData} from '../data-server/api.js';
 const POST_DATA_URL = 'https://30.javascript.pages.academy/kekstagram/';
 const FILE_TYPES = ['.jpg', '.jpeg', 'png', '.gif', '.webp', '.svg'];
 const ERROR_MESSAGE = 'Неверный формат изображения!';
+const FIRST_ELEMENT_INDEX = 0;
 
 const imgUploadButton = document.querySelector('.img-upload__input');
 const modalContainer = document.querySelector('.img-upload__overlay');
@@ -61,7 +62,7 @@ const onSubmitForm = (evt) => {
 };
 
 const onImgUploadButtonClick = () => {
-  const file = imgUploadButton.files[0];
+  const file = imgUploadButton.files[FIRST_ELEMENT_INDEX];
   const fileName = file.name.toLowerCase();
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
@@ -82,10 +83,12 @@ const onImgUploadButtonClick = () => {
 function openFormModal () {
   modalContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
+
   validateForm();
   checkErrors();
-  createSlider(currentEffect.value);
+  initSlider(currentEffect.value);
   scalePicture();
+
   selectEffectContainer.addEventListener('change', onSelectEffectContainerChange);
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);

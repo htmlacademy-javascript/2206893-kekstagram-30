@@ -2,15 +2,15 @@ import {getData} from '../data-server/api.js';
 import {renderPostModal} from './render-modal.js';
 import {renderGetErrorMessage} from '../utils/alert-messages.js';
 import {debounce} from '../utils/util.js';
-import {filterPosts} from './filters.js';
+import {sortPosts} from './sorting.js';
 
 const GET_DATA_URL = 'https://30.javascript.pages.academy/kekstagram/data';
 
 const container = document.querySelector('.pictures');
-const filterContainer = document.querySelector('.img-filters');
+const sortingContainer = document.querySelector('.img-filters');
 const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 
-let currentFilter = document.querySelector('.img-filters__button--active');
+let currentSorting = document.querySelector('.img-filters__button--active');
 
 const showError = () => renderGetErrorMessage(errorTemplate);
 
@@ -42,23 +42,23 @@ const createPosts = (posts) => {
   });
 };
 
-const debounceRender = debounce((filter, posts) => createPosts(filterPosts(filter, posts)));
+const debounceRender = debounce((sorting, posts) => createPosts(sortPosts(sorting, posts)));
 
-const onFiltersClick = (evt, posts) => {
+const onSortingClick = (evt, posts) => {
   if (evt.target.closest('.img-filters__button') && !evt.target.closest('.img-filters__button--active')) {
-    currentFilter.classList.remove('img-filters__button--active');
+    currentSorting.classList.remove('img-filters__button--active');
     evt.target.classList.add('img-filters__button--active');
-    currentFilter = evt.target;
-    debounceRender(currentFilter, posts);
+    currentSorting = evt.target;
+    debounceRender(currentSorting, posts);
   }
 };
 
 const renderPosts = (posts) => {
-  createPosts(filterPosts(currentFilter, posts));
-  filterContainer.classList.remove('img-filters--inactive');
-  filterContainer.addEventListener('click', (evt) => onFiltersClick(evt, posts));
+  createPosts(sortPosts(currentSorting, posts));
+  sortingContainer.classList.remove('img-filters--inactive');
+  sortingContainer.addEventListener('click', (evt) => onSortingClick(evt, posts));
 };
 
-const InitRenderPosts = () => getData(GET_DATA_URL, renderPosts, showError);
+const initRenderPosts = () => getData(GET_DATA_URL, renderPosts, showError);
 
-export {InitRenderPosts};
+export {initRenderPosts};
