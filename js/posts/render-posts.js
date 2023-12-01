@@ -8,17 +8,17 @@ const GET_DATA_URL = 'https://30.javascript.pages.academy/kekstagram/data';
 
 const container = document.querySelector('.pictures');
 const sortingContainer = document.querySelector('.img-filters');
-const errorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
+const errorTemplate = document.querySelector('#data-error')
+  .content
+  .querySelector('.data-error');
+const template = document.querySelector('#picture')
+  .content
+  .querySelector('.picture');
+const fragment = document.createDocumentFragment();
 
 let currentSorting = document.querySelector('.img-filters__button--active');
 
 const showError = () => renderGetErrorMessage(errorTemplate);
-
-const template = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
-
-const fragment = document.createDocumentFragment();
 
 const createPost = (data) => {
   const {url, description, likes, comments} = data;
@@ -48,7 +48,7 @@ const onSortingClick = (evt, posts) => {
   if (evt.target.closest('.img-filters__button') && !evt.target.closest('.img-filters__button--active')) {
     currentSorting.classList.remove('img-filters__button--active');
     evt.target.classList.add('img-filters__button--active');
-    currentSorting = evt.target;
+    currentSorting = evt.target.closest('.img-filters__button');
     debounceRender(currentSorting, posts);
   }
 };

@@ -7,8 +7,8 @@ const getData = (url, onSuccess, onError) => {
     .catch(() => onError());
 };
 
-const sendData = (url, onSuccess, onError, body) => {
-  fetch(url, {method: HTTP_METHOD, body})
+const sendData = (url, onSuccess, onError, body, method = HTTP_METHOD) => {
+  fetch(url, {method, body})
     .then((response) => {
       if (response.ok) {
         onSuccess();
