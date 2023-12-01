@@ -9,6 +9,9 @@ const POST_DATA_URL = 'https://30.javascript.pages.academy/kekstagram/';
 const FILE_TYPES = ['.jpg', '.jpeg', 'png', '.gif', '.webp', '.svg'];
 const ERROR_MESSAGE = 'Неверный формат изображения!';
 const FIRST_ELEMENT_INDEX = 0;
+const DEFAULT_PREVIEW_IMG = 'img/upload-default-image.jpg';
+const SUCCESS_VALUE = 'success';
+const ERROR_VALUE = 'error';
 
 const imgUploadButton = document.querySelector('.img-upload__input');
 const modalContainer = document.querySelector('.img-upload__overlay');
@@ -21,8 +24,6 @@ const sendErrorTemplate = document.querySelector('#error').content.querySelector
 const sendSuccessTemplate = document.querySelector('#success').content.querySelector('.success');
 const previewFull = document.querySelector('.img-upload__preview img');
 const previewEffects = document.querySelectorAll('.effects__preview');
-const successValue = 'success';
-const errorValue = 'error';
 
 const setSubmitButtonStatus = (value) => {
   uploadFormButton.disabled = value;
@@ -44,16 +45,16 @@ const showSuccess = () => {
 
   document.body.classList.add('modal-open');
 
-  renderMessage(sendSuccessTemplate, successValue);
+  renderMessage(sendSuccessTemplate, SUCCESS_VALUE);
   setSubmitButtonStatus(false);
 };
 
 const showError = () => {
-  renderMessage(sendErrorTemplate, errorValue);
+  renderMessage(sendErrorTemplate, ERROR_VALUE);
   setSubmitButtonStatus(false);
 };
 
-const onSubmitForm = (evt) => {
+const onUploadForm = (evt) => {
   evt.preventDefault();
   if (validateForm()) {
     setSubmitButtonStatus(true);
@@ -75,16 +76,15 @@ const onImgUploadButtonClick = () => {
     });
     openFormModal();
   } else {
-    renderMessage(sendErrorTemplate, errorValue);
+    renderMessage(sendErrorTemplate, ERROR_VALUE);
     document.querySelector('.error__title').textContent = ERROR_MESSAGE;
   }
 };
 
 const resetPreview = () => {
-  const src = 'img/upload-default-image.jpg';
-  previewFull.src = src;
+  previewFull.src = DEFAULT_PREVIEW_IMG;
   previewEffects.forEach((previewEffect) => {
-    previewEffect.style.backgroundImage = `url(${src})`;
+    previewEffect.style.backgroundImage = `url(${DEFAULT_PREVIEW_IMG})`;
   });
 };
 
@@ -100,7 +100,7 @@ function openFormModal () {
   selectEffectContainer.addEventListener('change', onSelectEffectContainerChange);
   closeButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
-  uploadForm.addEventListener('submit', onSubmitForm);
+  uploadForm.addEventListener('submit', onUploadForm);
 }
 
 function closeFormModal () {
@@ -108,7 +108,7 @@ function closeFormModal () {
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onDocumentKeydown);
-  document.removeEventListener('submit', onSubmitForm);
+  uploadForm.removeEventListener('submit', onUploadForm);
 
   uploadForm.reset();
   resetFormValidator();

@@ -2,7 +2,6 @@ import {getShuffledArray} from '../utils/util.js';
 
 const RANDOM_POSTS_COUNT = 10;
 
-const defaultSorting = document.querySelector('#filter-default');
 const randomSorting = document.querySelector('#filter-random');
 const discussedSorting = document.querySelector('#filter-discussed');
 
@@ -22,7 +21,7 @@ const sortPosts = (sorting, posts) => {
       return mostDiscussedPosts(posts);
     case randomSorting:
       return shufflePosts(posts);
-    case defaultSorting:
+    default:
       return posts;
   }
 };

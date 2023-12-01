@@ -29,12 +29,12 @@ const validateHashtagRepeat = (value) => {
 
 const validateComment = () => comment.value.length <= COMMENT_MAX_LENGTH;
 
-function checkErrors () {
+const checkErrors = () => {
   pristine.addValidator(hashtags, validateHashtag, ERROR_INVALID_HASHTAG, 1, true);
   pristine.addValidator(hashtags, validateHashtagNumber, ERROR_NUMBER_HASHTAGS, 1, true);
   pristine.addValidator(hashtags, validateHashtagRepeat, ERROR_REPEAT_HASHTAGS, 1, true);
   pristine.addValidator(comment, validateComment, ERROR_COMMENTS_LENGTH, 1, true);
-}
+};
 
 const validateForm = () => pristine.validate();
 
